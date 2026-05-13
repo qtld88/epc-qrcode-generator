@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>epc_qrcode_generator</id>
+	<name>EPC QR Code Generator</name>
+	<summary lang="en">Generate EPC/SEPA QR codes for bank transfers</summary>
+	<description>Generate EPC QR codes for SEPA transfers with full customization (logo, colors, presets)</description>
+	<version>1.0.4</version>
+	<licence>AGPL-3.0-or-later</licence>
+	<author mail="your-email@example.com" homepage="https://github.com/your-repo">QTL</author>
+	<namespace>EPCQRCodeGenerator</namespace>
+	<category>tools</category>
+	<category>office</category>
+	<website>https://github.com/qtl/epc-qrcode-generator</website>
+	<bugs>https://github.com/qtl/epc-qrcode-generator/issues</bugs>
+	<repository type="git">https://github.com/qtl/epc-qrcode-generator.git</repository>
+	<dependencies>
+		<nextcloud min-version="28" max-version="31"/>
+		<php min-version="8.1" max-version="8.4"/>
+	</dependencies>
+	<navigations>
+		<navigation>
+			<name>EPC QR Code</name>
+			<route>epc_qrcode_generator.page.index</route>
+			<icon>app.svg</icon>
+			<order>10</order>
+		</navigation>
+	</navigations>
+</info>
