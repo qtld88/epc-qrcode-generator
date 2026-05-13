@@ -1,0 +1,88 @@
+name: Build and release
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build the app
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          path: epc_qrcode_generator
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: gd, curl, json, mbstring, xml
+
+      - name: Install dependencies
+        working-directory: epc_qrcode_generator
+        run: |
+          npm ci
+          composer install --no-dev
+
+      - name: Build frontend
+        working-directory: epc_qrcode_generator
+        run: npm run build
+
+      - name: Lint PHP
+        working-directory: epc_qrcode_generator
+        run: composer run lint || true
+
+      - name: Create release tarball
+        working-directory: epc_qrcode_generator
+        run: |
+          mkdir -p build/artifacts
+          cd ..
+          tar czf epc_qrcode_generator/build/artifacts/epc_qrcode_generator.tar.gz \
+            --exclude=.git \
+            --exclude=.github \
+            --exclude=node_modules \
+            --exclude=src \
+            --exclude=vendor \
+            --exclude=build \
+            --exclude=Makefile \
+            --exclude=webpack.config.js \
+            --exclude=package.json \
+            --exclude=package-lock.json \
+            --exclude=.eslintrc.cjs \
+            --exclude=.gitignore \
+            --exclude=.php-cs-fixer.cache \
+            -C epc_qrcode_generator .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: epc_qrcode_generator
+          path: epc_qrcode_generator/build/artifacts/epc_qrcode_generator.tar.gz
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    name: Create GitHub release
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: epc_qrcode_generator
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: epc_qrcode_generator.tar.gz
+          generate_release_notes: true
