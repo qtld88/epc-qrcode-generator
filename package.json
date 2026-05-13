@@ -18,7 +18,7 @@
 		"@nextcloud/l10n": "^3.0.0",
 		"@nextcloud/router": "^3.0.0",
 		"@nextcloud/vue": "^9.8.0",
-		"pinia": "^2.1.0",
+		"pinia": "^3.0.4",
 		"qr-code-styling": "^1.9.2",
 		"vue": "^3.4.0",
 		"vue-router": "^4.2.0"
