@@ -1,5 +1,7 @@
 # EPC QR Code Generator
 
+> **Fork of** [Mirrdhyn/epc-qr-generator](https://github.com/Mirrdhyn/epc-qr-generator) — with added features and fixes.
+
 Generate EPC QR codes for SEPA transfers directly in Nextcloud.
 
 ## Features
@@ -23,7 +25,7 @@ Generate EPC QR codes for SEPA transfers directly in Nextcloud.
 
 1. Clone this repository into your Nextcloud `apps/` directory:
    ```bash
-   git clone https://github.com/qtl/epc-qrcode-generator.git
+   git clone https://github.com/qtld88/epc-qrcode-generator.git
    ```
 
 2. Install PHP dependencies:
