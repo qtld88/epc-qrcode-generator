@@ -78,6 +78,8 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     name: Create GitHub release
+    permissions:
+      contents: write
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
