@@ -4,16 +4,38 @@
 	<id>epc_qrcode_generator</id>
 	<name>EPC QR Code Generator</name>
 	<summary lang="en">Generate EPC/SEPA QR codes for bank transfers</summary>
-	<description>Generate EPC QR codes for SEPA transfers with full customization (logo, colors, presets)</description>
-	<version>1.0.4</version>
+	<description lang="en"><![CDATA[
+# EPC QR Code Generator
+
+Generate **EPC/SEPA QR codes** for European bank transfers directly inside Nextcloud. Scan the code with any SEPA-compatible banking app to pre-fill a transfer — no manual typing of IBANs or amounts.
+
+## Features
+
+- **EPC/SEPA standard** — produces valid GIROCODE / EPC QR codes recognised by European banking apps
+- **Live preview** — QR updates instantly as you type
+- **Full customization** — pixel colors and shapes, finder pattern styles, background color
+- **Logo embedding** — drop your organisation logo in the center (square, round, or original shape; stretch or crop fit)
+- **Transaction text** — optional caption below the QR (beneficiary, IBAN, amount) with custom font and size
+- **Presets** — save and reload your favourite styles
+- **History** — every generated code is kept for quick re-use
+- **Export** — download as PNG, copy to clipboard, or save straight to Nextcloud Files
+
+## Use cases
+
+Donations, invoices, membership fees, event payments — anywhere you want people to pay you without copying bank details by hand.
+
+IBAN is validated (modulo-97) before generation. All processing happens client-side; no transaction data leaves your server.
+	]]></description>
+	<version>1.0.5</version>
 	<licence>AGPL-3.0-or-later</licence>
-	<author mail="your-email@example.com" homepage="https://github.com/your-repo">QTL</author>
+	<author mail="qtld@pm.me" homepage="https://github.com/qtld88">QTL</author>
 	<namespace>EPCQRCodeGenerator</namespace>
 	<category>tools</category>
 	<category>office</category>
-	<website>https://github.com/qtl/epc-qrcode-generator</website>
-	<bugs>https://github.com/qtl/epc-qrcode-generator/issues</bugs>
-	<repository type="git">https://github.com/qtl/epc-qrcode-generator.git</repository>
+	<website>https://github.com/qtld88/epc-qrcode-generator</website>
+	<bugs>https://github.com/qtld88/epc-qrcode-generator/issues</bugs>
+	<repository type="git">https://github.com/qtld88/epc-qrcode-generator.git</repository>
+	<screenshot>https://raw.githubusercontent.com/qtld88/epc-qrcode-generator/main/screenshots/generator.jpg</screenshot>
 	<dependencies>
 		<nextcloud min-version="28" max-version="31"/>
 		<php min-version="8.1" max-version="8.4"/>
