@@ -26,7 +26,7 @@ Donations, invoices, membership fees, event payments — anywhere you want peopl
 
 IBAN is validated (modulo-97) before generation. All processing happens client-side; no transaction data leaves your server.
 	]]></description>
-	<version>1.0.6</version>
+	<version>1.1.0</version>
 	<licence>AGPL-3.0-or-later</licence>
 	<author mail="qtld@pm.me" homepage="https://github.com/qtld88">QTL</author>
 	<namespace>EPCQRCodeGenerator</namespace>
