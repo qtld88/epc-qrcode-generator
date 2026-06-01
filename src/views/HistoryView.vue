@@ -29,8 +29,10 @@
 		<HistoryList
 			v-else
 			:items="filteredItems"
+			:groups="groupsStore.items"
 			@delete="onDelete"
-			@regenerate="onRegenerate" />
+			@regenerate="onRegenerate"
+			@share="onShare" />
 	</div>
 </template>
 
@@ -40,6 +42,7 @@ import NcButton from '@nextcloud/vue/components/NcButton'
 
 import HistoryList from '../components/HistoryList.vue'
 import { useHistoryStore } from '../stores/history.js'
+import { useGroupsStore } from '../stores/groups.js'
 import { hasLocalStorageData, getLocalStorageCount, importHistoryFromLocalStorage } from '../utils/migration.js'
 
 export default {
@@ -75,6 +78,8 @@ export default {
 	created() {
 		this.historyStore = useHistoryStore()
 		this.historyStore.fetchHistory()
+		this.groupsStore = useGroupsStore()
+		this.groupsStore.fetchGroups()
 		this.showImportBanner = hasLocalStorageData()
 		this.localStorageCount = getLocalStorageCount()
 	},
@@ -110,6 +115,13 @@ export default {
 					remittance: item.remittance,
 				},
 			})
+		},
+		async onShare({ id, group }) {
+			try {
+				await this.store.shareHistory(id, group)
+			} catch (e) {
+				OC.Notification.showTemporary(`❌ ${e.message}`)
+			}
 		},
 	},
 }
