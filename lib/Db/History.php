@@ -14,6 +14,7 @@ class History extends Entity {
 	protected string $remittance = '';
 	protected string $epcString = '';
 	protected int $createdAt = 0;
+	protected ?string $sharedGroup = null;
 
 	public function __construct() {
 		$this->addType('id', 'integer');
@@ -24,6 +25,7 @@ class History extends Entity {
 		$this->addType('remittance', 'string');
 		$this->addType('epcString', 'string');
 		$this->addType('createdAt', 'integer');
+		$this->addType('sharedGroup', 'string');
 	}
 
 	/**
@@ -39,6 +41,7 @@ class History extends Entity {
 			'remittance' => $this->getRemittance(),
 			'epcString' => $this->getEpcString(),
 			'createdAt' => $this->getCreatedAt(),
+			'sharedGroup' => $this->getSharedGroup(),
 		];
 	}
 }
