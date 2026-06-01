@@ -23,6 +23,34 @@ class PresetMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	/**
+	 * Own presets plus presets shared to any of the given groups.
+	 *
+	 * @param string $userId
+	 * @param string[] $groupIds
+	 * @return Preset[]
+	 */
+	public function findAllVisible(string $userId, array $groupIds): array {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from('epc_qr_presets');
+
+		$ownExpr = $qb->expr()->eq('user_id', $qb->createNamedParameter($userId));
+		if (count($groupIds) > 0) {
+			$sharedExpr = $qb->expr()->andX(
+				$qb->expr()->isNotNull('shared_group'),
+				$qb->expr()->in('shared_group', $qb->createNamedParameter($groupIds, IQueryBuilder::PARAM_STR_ARRAY)),
+			);
+			$qb->where($qb->expr()->orX($ownExpr, $sharedExpr));
+		} else {
+			$qb->where($ownExpr);
+		}
+
+		$qb->orderBy('name', 'ASC');
+
+		return $this->findEntities($qb);
+	}
+
 	public function find(int $id): ?Preset {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
