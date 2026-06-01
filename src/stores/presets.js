@@ -31,11 +31,12 @@ export const usePresetsStore = defineStore('presets', {
 
 		async savePreset(name, data) {
 			try {
-				const existing = this.items.find(p => p.name === name)
+				const existing = this.items.find(p => p.name === name && p.isOwner !== false)
 				const payload = {
 					name,
 					styleOptions: JSON.stringify(data.styleOptions || data),
 					logoFile: data.logoFile || null,
+					sharedGroup: data.sharedGroup || null,
 				}
 				if (existing) {
 					await axios.put(generateUrl(`/apps/epc_qrcode_generator/presets/${existing.id}`), payload)
