@@ -210,6 +210,12 @@
 					:placeholder="t('epc_qrcode_generator', 'Preset name...')"
 					maxlength="50"
 					class="preset-input" />
+				<select v-model="presetShareGroup" class="preset-select">
+					<option value="">{{ t('epc_qrcode_generator', 'Private') }}</option>
+					<option v-for="g in groups" :key="g.id" :value="g.id">
+						{{ g.displayName }}
+					</option>
+				</select>
 				<NcButton @click="savePreset">
 					{{ t('epc_qrcode_generator', 'Save') }}
 				</NcButton>
@@ -218,7 +224,7 @@
 				<select v-model="selectedPreset" class="preset-select">
 					<option value="">{{ t('epc_qrcode_generator', 'Select preset...') }}</option>
 					<option v-for="(preset, name) in presets" :key="name" :value="name">
-						{{ name }}
+						{{ name }}{{ presetBadge(name) }}
 					</option>
 				</select>
 				<NcButton
@@ -228,7 +234,7 @@
 					{{ t('epc_qrcode_generator', 'Load') }}
 				</NcButton>
 				<NcButton
-					v-if="selectedPreset"
+					v-if="selectedPreset && isOwnPreset(selectedPreset)"
 					type="tertiary"
 					@click="deletePreset">
 					{{ t('epc_qrcode_generator', 'Delete') }}
@@ -266,12 +272,21 @@ export default {
 			type: String,
 			default: null,
 		},
+		groups: {
+			type: Array,
+			default: () => [],
+		},
+		presetMeta: {
+			type: Object,
+			default: () => ({}), // name -> { isOwner, sharedGroup, ownerDisplayName }
+		},
 	},
 	emits: ['update:options', 'save-preset', 'load-preset', 'delete-preset', 'reset-styles', 'logo-upload', 'logo-remove'],
 	data() {
 		return {
 			presetName: '',
 			selectedPreset: '',
+			presetShareGroup: '',
 			logoShapeOptions: [
 				{ value: 'square', label: 'Square' },
 				{ value: 'round', label: 'Round' },
@@ -314,9 +329,21 @@ export default {
 		},
 		savePreset() {
 			if (this.presetName.trim()) {
-				this.$emit('save-preset', this.presetName.trim())
+				this.$emit('save-preset', { name: this.presetName.trim(), sharedGroup: this.presetShareGroup || null })
 				this.presetName = ''
+				this.presetShareGroup = ''
 			}
+		},
+		isOwnPreset(name) {
+			const meta = this.presetMeta[name]
+			return !meta || meta.isOwner !== false
+		},
+		presetBadge(name) {
+			const meta = this.presetMeta[name]
+			if (meta && meta.isOwner === false) {
+				return ` (${meta.ownerDisplayName})`
+			}
+			return ''
 		},
 		loadPreset() {
 			if (this.selectedPreset) {

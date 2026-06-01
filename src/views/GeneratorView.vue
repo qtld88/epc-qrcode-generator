@@ -29,6 +29,8 @@
 				:options="styleOptions"
 				:presets="presetsMap"
 				:logo-preview="qrService.logoDataUrl"
+				:groups="groupsStore.items"
+				:preset-meta="presetMetaMap"
 				@update:options="onStyleUpdate"
 				@logo-upload="onLogoUpload"
 				@logo-remove="onLogoRemove"
@@ -49,6 +51,7 @@ import QRService from '../services/QRService.js'
 import EPCGenerator from '../lib/epcGenerator.js'
 import { useHistoryStore } from '../stores/history.js'
 import { usePresetsStore } from '../stores/presets.js'
+import { useGroupsStore } from '../stores/groups.js'
 
 const DEFAULT_STYLES = {
 	pixelShape: 'square',
@@ -100,6 +103,17 @@ export default {
 			})
 			return map
 		},
+		presetMetaMap() {
+			const map = {}
+			this.presetsStore.presetList.forEach(p => {
+				map[p.name] = {
+					isOwner: p.isOwner,
+					sharedGroup: p.sharedGroup,
+					ownerDisplayName: p.ownerDisplayName,
+				}
+			})
+			return map
+		},
 		shouldAutoGenerate() {
 			return !!(this.$route.query.beneficiary && this.$route.query.iban)
 		},
@@ -109,6 +123,8 @@ export default {
 		this.historyStore = useHistoryStore()
 		this.presetsStore = usePresetsStore()
 		this.presetsStore.fetchPresets()
+		this.groupsStore = useGroupsStore()
+		this.groupsStore.fetchGroups()
 
 		// Populate form from history re-generate query params
 		if (this.$route.query.beneficiary) {
@@ -200,11 +216,14 @@ export default {
 
 		/* === Presets === */
 
-		async onSavePreset(name) {
+		async onSavePreset(payload) {
+			const name = typeof payload === 'string' ? payload : payload.name
+			const sharedGroup = typeof payload === 'string' ? null : payload.sharedGroup
 			try {
 				await this.presetsStore.savePreset(name, {
 					styleOptions: this.styleOptions,
 					logoFile: this.qrService.logoDataUrl || null,
+					sharedGroup,
 				})
 				OC.Notification.showTemporary(this.t('epc_qrcode_generator', 'Saved!'))
 			} catch (e) {
