@@ -13,6 +13,7 @@ class Preset extends Entity {
 	protected ?string $logoFile = null;
 	protected int $createdAt = 0;
 	protected int $updatedAt = 0;
+	protected ?string $sharedGroup = null;
 
 	public function __construct() {
 		$this->addType('id', 'integer');
@@ -22,6 +23,7 @@ class Preset extends Entity {
 		$this->addType('logoFile', 'string');
 		$this->addType('createdAt', 'integer');
 		$this->addType('updatedAt', 'integer');
+		$this->addType('sharedGroup', 'string');
 	}
 
 	public function toArray(): array {
@@ -33,6 +35,7 @@ class Preset extends Entity {
 			'logoFile' => $this->getLogoFile(),
 			'createdAt' => $this->getCreatedAt(),
 			'updatedAt' => $this->getUpdatedAt(),
+			'sharedGroup' => $this->getSharedGroup(),
 		];
 	}
 

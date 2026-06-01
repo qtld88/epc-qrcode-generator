@@ -13,6 +13,12 @@
 					<span v-if="item.amount" class="history-amount">{{ item.amount }} EUR</span>
 					<span v-if="item.remittance" class="history-remittance">{{ item.remittance }}</span>
 					<span class="history-date">{{ formatDate(item.createdAt) }}</span>
+					<span v-if="!item.isOwner" class="history-badge">
+						{{ groupLabel(item.sharedGroup) }} · {{ item.ownerDisplayName }}
+					</span>
+					<span v-else-if="item.sharedGroup" class="history-badge">
+						{{ t('epc_qrcode_generator', 'Shared with') }} {{ groupLabel(item.sharedGroup) }}
+					</span>
 				</div>
 			</div>
 			<div class="history-item-actions">
@@ -21,7 +27,18 @@
 					@click="$emit('regenerate', item)">
 					{{ t('epc_qrcode_generator', 'Re-generate') }}
 				</NcButton>
+				<select
+					v-if="item.isOwner"
+					class="history-share-select"
+					:value="item.sharedGroup || ''"
+					@change="$emit('share', { id: item.id, group: $event.target.value })">
+					<option value="">{{ t('epc_qrcode_generator', 'Private') }}</option>
+					<option v-for="g in groups" :key="g.id" :value="g.id">
+						{{ g.displayName }}
+					</option>
+				</select>
 				<NcButton
+					v-if="item.isOwner"
 					type="tertiary"
 					@click="$emit('delete', item.id)">
 					{{ t('epc_qrcode_generator', 'Delete') }}
@@ -44,9 +61,17 @@ export default {
 			type: Array,
 			required: true,
 		},
+		groups: {
+			type: Array,
+			default: () => [],
+		},
 	},
-	emits: ['delete', 'regenerate'],
+	emits: ['delete', 'regenerate', 'share'],
 	methods: {
+		groupLabel(id) {
+			const g = this.groups.find(x => x.id === id)
+			return g ? g.displayName : id
+		},
 		formatIban(iban) {
 			return (iban || '').replace(/\s+/g, '').toUpperCase().replace(/(.{4})/g, '$1 ').trim()
 		},
@@ -133,5 +158,17 @@ export default {
 		width: 100%;
 		justify-content: flex-end;
 	}
+}
+
+.history-badge {
+	background: var(--color-primary-element-light);
+	color: var(--color-primary-element-light-text);
+	border-radius: 12px;
+	padding: 1px 8px;
+	font-size: 11px;
+}
+
+.history-share-select {
+	max-width: 140px;
 }
 </style>

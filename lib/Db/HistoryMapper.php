@@ -30,6 +30,34 @@ class HistoryMapper extends QBMapper {
 	}
 
 	/**
+	 * Own entries plus entries shared to any of the given groups.
+	 *
+	 * @param string $userId
+	 * @param string[] $groupIds
+	 * @return History[]
+	 */
+	public function findAllVisible(string $userId, array $groupIds): array {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from('epc_qr_history');
+
+		$ownExpr = $qb->expr()->eq('user_id', $qb->createNamedParameter($userId));
+		if (count($groupIds) > 0) {
+			$sharedExpr = $qb->expr()->andX(
+				$qb->expr()->isNotNull('shared_group'),
+				$qb->expr()->in('shared_group', $qb->createNamedParameter($groupIds, IQueryBuilder::PARAM_STR_ARRAY)),
+			);
+			$qb->where($qb->expr()->orX($ownExpr, $sharedExpr));
+		} else {
+			$qb->where($ownExpr);
+		}
+
+		$qb->orderBy('created_at', 'DESC');
+
+		return $this->findEntities($qb);
+	}
+
+	/**
 	 * Find a single history entry by ID
 	 *
 	 * @param int $id

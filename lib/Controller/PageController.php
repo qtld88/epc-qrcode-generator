@@ -12,8 +12,10 @@ namespace OCA\EPCQRCodeGenerator\Controller;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\Attribute\PublicPage;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
+use OCP\IGroupManager;
 use OCP\IInitialStateService;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -31,6 +33,7 @@ class PageController extends Controller {
 	private IUserSession $userSession;
 	private IURLGenerator $urlGenerator;
 	private IConfig $config;
+	private IGroupManager $groupManager;
 
 	/**
 	 * @param IRequest $request The HTTP request
@@ -48,6 +51,7 @@ class PageController extends Controller {
 		IUserSession $userSession,
 		IURLGenerator $urlGenerator,
 		IConfig $config,
+		IGroupManager $groupManager,
 		?string $appName = null,
 	) {
 		parent::__construct($appName ?? 'epc_qrcode_generator', $request);
@@ -57,6 +61,7 @@ class PageController extends Controller {
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
 		$this->config = $config;
+		$this->groupManager = $groupManager;
 	}
 
 	/**
@@ -82,5 +87,28 @@ class PageController extends Controller {
 		);
 
 		return new TemplateResponse('epc_qrcode_generator', 'main');
+	}
+
+	/**
+	 * Return the current user's groups for the share dropdowns.
+	 *
+	 * @return JSONResponse
+	 */
+	#[PublicPage]
+	public function groups(): JSONResponse {
+		$user = $this->userSession->getUser();
+		if ($user === null) {
+			return new JSONResponse(['error' => 'Not authenticated'], 401);
+		}
+		$ids = $this->groupManager->getUserGroupIds($user);
+		$result = [];
+		foreach ($ids as $id) {
+			$group = $this->groupManager->get($id);
+			$result[] = [
+				'id' => $id,
+				'displayName' => $group !== null ? $group->getDisplayName() : $id,
+			];
+		}
+		return new JSONResponse($result);
 	}
 }
