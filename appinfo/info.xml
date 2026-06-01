@@ -28,11 +28,20 @@ IBAN is validated (modulo-97) before generation. All processing happens client-s
 
 ## How To
 
-Open **EPC QR Code** from the Nextcloud menu, then fill in the beneficiary, the IBAN, and optionally an amount and a payment reference. The amount can be left empty for an open ("free") amount. The app builds the QR code instantly, and anyone can scan it with their banking app to pre-fill the transfer.
+Open **EPC QR Code** from the Nextcloud menu and fill in the transfer details:
 
-The panel on the right lets you customize the look of the code: add a logo in the center, choose colors and shapes, and optionally show the transaction details underneath the QR. Once the code is generated you can download it as a PNG, copy it to the clipboard, or save it straight into your Nextcloud Files. If you often reuse the same style, save it as a preset and reapply it in one click.
+- **Beneficiary** and **IBAN** — required
+- **Amount** — optional (leave empty for an open amount)
+- **Reference** — optional payment note
 
-Everything you generate stays private by default, but it can be shared with a Nextcloud group — both an individual code from your history and a style preset. Group members can then see the shared item (marked with a badge showing the group and the creator) but cannot edit or delete it: only the creator keeps control. The **History** tab lists your own codes together with those shared with you, and lets you regenerate any of them at any time.
+The code is built instantly. Anyone can scan it with their banking app to pre-fill the transfer.
+
+Use the panel on the right to style it — add a center logo, set colors and shapes, or show the transaction details below the code. When you're done:
+
+- **Download** as PNG, **copy** to clipboard, or **save** to Nextcloud Files
+- Save a style as a **preset** to reuse it in one click
+
+Everything is private by default. From the **History** tab you can share a single code — or a preset at save time — with a Nextcloud group. Group members then see the item (badged with the group and creator) read-only; only the creator can edit, delete, or unshare it.
 	]]></description>
 	<version>1.1.1</version>
 	<licence>AGPL-3.0-or-later</licence>
