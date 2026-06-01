@@ -50,6 +50,23 @@ export const useHistoryStore = defineStore('history', {
 			}
 		},
 
+		async shareHistory(id, group) {
+			try {
+				const response = await axios.post(
+					generateUrl(`/apps/epc_qrcode_generator/history/${id}/share`),
+					{ group: group || null },
+				)
+				const idx = this.items.findIndex(item => item.id === id)
+				if (idx !== -1) {
+					this.items.splice(idx, 1, response.data)
+				}
+				return response.data
+			} catch (e) {
+				console.error('Failed to share history entry:', e)
+				throw e
+			}
+		},
+
 		async importFromLocalStorage() {
 			try {
 				const stored = localStorage.getItem('epcQrHistory')
