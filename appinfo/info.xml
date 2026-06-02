@@ -36,14 +36,16 @@ Open **EPC QR Code** from the Nextcloud menu and fill in the transfer details:
 
 The code is built instantly. Anyone can scan it with their banking app to pre-fill the transfer.
 
-Use the panel on the right to style it — add a center logo, set colors and shapes, or show the transaction details below the code. When you're done:
+Use the panel on the right to style it — add a center logo, set colors and shapes, or show the transaction details below the code. When you're done, **download** as PNG, **copy** to clipboard, or **save** to Nextcloud Files.
 
-- **Download** as PNG, **copy** to clipboard, or **save** to Nextcloud Files
-- Save a style as a **preset** to reuse it in one click
+Styles can be saved as **presets** and reused later:
+
+- *To save a new preset:* type a name and click **Save**
+- *To load an existing preset:* pick it from the dropdown and click **Load**
 
 Everything is private by default. From the **History** tab you can share a single code — or a preset at save time — with a Nextcloud group. Group members then see the item (badged with the group and creator) read-only; only the creator can edit, delete, or unshare it.
 	]]></description>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 	<licence>AGPL-3.0-or-later</licence>
 	<author mail="qtld@pm.me" homepage="https://github.com/qtld88">QTL</author>
 	<namespace>EPCQRCodeGenerator</namespace>
