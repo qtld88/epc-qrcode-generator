@@ -45,7 +45,7 @@ Styles can be saved as **presets** and reused later:
 
 Everything is private by default. From the **History** tab you can share a single code — or a preset at save time — with a Nextcloud group. Group members then see the item (badged with the group and creator) read-only; only the creator can edit, delete, or unshare it.
 	]]></description>
-	<version>1.1.2</version>
+	<version>1.1.3</version>
 	<licence>AGPL-3.0-or-later</licence>
 	<author mail="qtld@pm.me" homepage="https://github.com/qtld88">QTL</author>
 	<namespace>EPCQRCodeGenerator</namespace>

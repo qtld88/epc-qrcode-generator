@@ -203,42 +203,50 @@
 		<!-- Presets Section -->
 		<div class="customizer-section">
 			<h3>{{ t('epc_qrcode_generator', 'Presets') }}</h3>
-			<div class="customizer-row">
-				<input
-					v-model="presetName"
-					type="text"
-					:placeholder="t('epc_qrcode_generator', 'Preset name...')"
-					maxlength="50"
-					class="preset-input" />
-				<select v-model="presetShareGroup" class="preset-select">
-					<option value="">{{ t('epc_qrcode_generator', 'Private') }}</option>
-					<option v-for="g in groups" :key="g.id" :value="g.id">
-						{{ g.displayName }}
-					</option>
-				</select>
-				<NcButton @click="savePreset">
-					{{ t('epc_qrcode_generator', 'Save') }}
-				</NcButton>
+
+			<div class="preset-subgroup">
+				<p class="preset-hint">{{ t('epc_qrcode_generator', 'To save a new preset:') }}</p>
+				<div class="customizer-row">
+					<input
+						v-model="presetName"
+						type="text"
+						:placeholder="t('epc_qrcode_generator', 'Preset name...')"
+						maxlength="50"
+						class="preset-input" />
+					<select v-model="presetShareGroup" class="preset-select">
+						<option value="">{{ t('epc_qrcode_generator', 'Private') }}</option>
+						<option v-for="g in groups" :key="g.id" :value="g.id">
+							{{ g.displayName }}
+						</option>
+					</select>
+					<NcButton @click="savePreset">
+						{{ t('epc_qrcode_generator', 'Save') }}
+					</NcButton>
+				</div>
 			</div>
-			<div class="customizer-row">
-				<select v-model="selectedPreset" class="preset-select">
-					<option value="">{{ t('epc_qrcode_generator', 'Select preset...') }}</option>
-					<option v-for="(preset, name) in presets" :key="name" :value="name">
-						{{ name }}{{ presetBadge(name) }}
-					</option>
-				</select>
-				<NcButton
-					v-if="selectedPreset"
-					type="tertiary"
-					@click="loadPreset">
-					{{ t('epc_qrcode_generator', 'Load') }}
-				</NcButton>
-				<NcButton
-					v-if="selectedPreset && isOwnPreset(selectedPreset)"
-					type="tertiary"
-					@click="deletePreset">
-					{{ t('epc_qrcode_generator', 'Delete') }}
-				</NcButton>
+
+			<div class="preset-subgroup">
+				<p class="preset-hint">{{ t('epc_qrcode_generator', 'To load an existing preset:') }}</p>
+				<div class="customizer-row">
+					<select v-model="selectedPreset" class="preset-select">
+						<option value="">{{ t('epc_qrcode_generator', 'Select preset...') }}</option>
+						<option v-for="(preset, name) in presets" :key="name" :value="name">
+							{{ name }}{{ presetBadge(name) }}
+						</option>
+					</select>
+					<NcButton
+						v-if="selectedPreset"
+						type="tertiary"
+						@click="loadPreset">
+						{{ t('epc_qrcode_generator', 'Load') }}
+					</NcButton>
+					<NcButton
+						v-if="selectedPreset && isOwnPreset(selectedPreset)"
+						type="tertiary"
+						@click="deletePreset">
+						{{ t('epc_qrcode_generator', 'Delete') }}
+					</NcButton>
+				</div>
 			</div>
 		</div>
 
@@ -383,6 +391,17 @@ export default {
 	gap: 8px;
 	margin-bottom: 8px;
 	flex-wrap: wrap;
+}
+
+.preset-subgroup {
+	margin-bottom: 12px;
+}
+
+.preset-hint {
+	font-size: 12px;
+	font-weight: 600;
+	margin: 0 0 4px;
+	color: var(--color-text-maxcontrast);
 }
 
 .customizer-row label {
