@@ -19,4 +19,9 @@ return [
 		['name' => 'export#saveToFiles', 'url' => '/export/save', 'verb' => 'POST'],
 		['name' => 'folder#listFolders', 'url' => '/folders', 'verb' => 'GET'],
 	],
+	'ocs' => [
+		['name' => 'api#listHistory', 'url' => '/api/v1/history', 'verb' => 'GET'],
+		['name' => 'api#createHistory', 'url' => '/api/v1/history', 'verb' => 'POST'],
+		['name' => 'api#saveToFiles', 'url' => '/api/v1/export/save', 'verb' => 'POST'],
+	],
 ];

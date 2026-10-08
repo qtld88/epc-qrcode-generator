@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.4 — 2026-10-08
+### Added
+- OCS API for scripts and automations (Basic Auth + app password, header `OCS-APIRequest: true`):
+  `GET/POST /ocs/v2.php/apps/epc_qrcode_generator/api/v1/history`,
+  `POST /ocs/v2.php/apps/epc_qrcode_generator/api/v1/export/save`
+
 ## 1.0.4 — 2026-05-12
 ### Added
 - Custom FolderPicker component replaces broken `@nextcloud/dialogs` file picker (silently hangs in NC31)
