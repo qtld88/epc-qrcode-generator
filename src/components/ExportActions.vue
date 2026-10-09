@@ -15,7 +15,7 @@
 			@click="onSaveToFiles">
 			{{ t('epc_qrcode_generator', 'Save to Files') }}
 		</NcButton>
-		<FolderPicker :show.sync="showFolderPicker" :initial-filename="defaultFilename" @folder-selected="handleFolderSelected" />
+		<FolderPicker :show.sync="showFolderPicker" :initial-path="saveFolder" :initial-filename="defaultFilename" @folder-selected="handleFolderSelected" />
 		<div v-if="feedback" class="feedback" :class="feedbackType">
 			{{ feedback }}
 		</div>
@@ -54,6 +54,10 @@ export default {
 		options: {
 			type: Object,
 			default: null,
+		},
+		saveFolder: {
+			type: String,
+			default: '',
 		},
 	},
 	data() {

@@ -15,6 +15,22 @@ Generate EPC QR codes for SEPA transfers directly in Nextcloud.
 - **History** — Automatic history of generated QR codes with search and re-generate
 - **Multi-language** — English, French, German, Spanish, Italian, Dutch
 
+## Prefilled links
+
+Open the generator with query parameters to prefill the form and render the code at once:
+
+```
+https://<nextcloud>/index.php/apps/epc_qrcode_generator/?beneficiary=...&iban=...&remittance=...
+```
+
+| Parameter | Effect |
+|-----------|--------|
+| `beneficiary`, `iban` | Required for the automatic render |
+| `amount`, `remittance` | Optional transfer fields |
+| `preset` | Name of a saved or shared preset, applied before the render |
+| `folder` | Folder opened first in "Save to Files" (created on save if missing) |
+| `share` | Group the new history entry is shared with (you must be a member) |
+
 ## Requirements
 
 - Nextcloud 28+

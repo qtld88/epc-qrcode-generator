@@ -22,7 +22,8 @@
 				:qr-preview-ref="qrPreviewRefHandle"
 				:qr-service="qrService"
 				:form-data="formData"
-				:options="styleOptions" />
+				:options="styleOptions"
+				:save-folder="saveFolder" />
 		</div>
 		<div class="generator-sidebar">
 			<QrCustomizer
@@ -93,6 +94,8 @@ export default {
 			},
 			qrService: new QRService(),
 			qrPreviewRefHandle: null,
+			saveFolder: this.$route.query.folder || '',
+			pendingShareGroup: this.$route.query.share || null,
 		}
 	},
 	computed: {
@@ -122,7 +125,7 @@ export default {
 		this.epcGenerator = new EPCGenerator()
 		this.historyStore = useHistoryStore()
 		this.presetsStore = usePresetsStore()
-		this.presetsStore.fetchPresets()
+		this.presetsReady = this.presetsStore.fetchPresets()
 		this.groupsStore = useGroupsStore()
 		this.groupsStore.fetchGroups()
 
@@ -136,9 +139,14 @@ export default {
 			}
 		}
 	},
-	mounted() {
-		// Auto-generate QR when navigating from history re-generate
+	async mounted() {
+		// Auto-generate QR when navigating from history re-generate or from a prefilled link
 		if (this.shouldAutoGenerate) {
+			// Apply the preset before the first render: a logo change after render needs a full re-render
+			if (this.$route.query.preset) {
+				await this.presetsReady
+				await this.onLoadPreset(this.$route.query.preset)
+			}
 			this.$nextTick(() => {
 				this.$refs.qrForm?.onSubmit()
 			})
@@ -172,6 +180,13 @@ export default {
 					remittance: formData.remittance || '',
 					epcString,
 					createdAt: Date.now(),
+				}).then(entry => {
+					// Share only the entry created from the link, not later re-generations
+					const group = this.pendingShareGroup
+					this.pendingShareGroup = null
+					if (group && entry?.id) {
+						return this.historyStore.shareHistory(entry.id, group)
+					}
 				}).catch(e => console.error('Failed to save history:', e))
 
 				// Scroll to result

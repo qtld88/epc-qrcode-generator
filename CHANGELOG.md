@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.5 — 2026-10-09
+### Added
+- Prefilled links: `preset`, `folder` and `share` query parameters (see README)
+### Fixed
+- Blank page when the URL form (`/index.php/apps/...` or `/apps/...`) differs from the server's pretty-URL setting
+
 ## 1.1.4 — 2026-10-08
 ### Added
 - OCS API for scripts and automations (Basic Auth + app password, header `OCS-APIRequest: true`):
